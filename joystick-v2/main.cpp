@@ -22,6 +22,11 @@ const int joystickX = A0;
 const int joystickY = A1;
 const int joystickBtn = 2;
 
+const int voltagePin = A2;
+const int led1Pin = 8;
+const int led2Pin = 7;
+const int led3Pin = 6;
+
 const int THRESHOLD_LOW = 490;
 const int THRESHOLD_HIGH = 510;
 
@@ -31,11 +36,16 @@ RF24 radio(9, 10);
 
 void setup()
 {
-  Serial.begin(9600);
+  // Serial.begin(9600);
 
   pinMode(joystickX, INPUT);
   pinMode(joystickY, INPUT);
   pinMode(joystickBtn, INPUT);
+
+  pinMode(voltagePin, INPUT);
+  pinMode(led1Pin, OUTPUT);
+  pinMode(led2Pin, OUTPUT);
+  pinMode(led3Pin, OUTPUT);
 
   radio.begin();
   radio.setChannel(108);
@@ -43,6 +53,8 @@ void setup()
   radio.setDataRate(RF24_250KBPS);
   radio.openWritingPipe(addresses[1]);
   // radio.openReadingPipe(1, addresses[0]); // not used yet
+
+  digitalWrite(led1Pin, HIGH);
 }
 
 void loop()
@@ -53,7 +65,24 @@ void loop()
   int x = analogRead(joystickX);
   int y = analogRead(joystickY);
 
-  Serial.println(String("x = ") + x + ", y = " + y);
+  /*
+    3.5 V -> 722
+    3.9 V -> 800
+    4.2 V -> 867
+  */ 
+  int v = analogRead(voltagePin);
+  // Serial.println(String("voltage val = ") + v);
+  
+  if(v > 850) {
+      digitalWrite(led2Pin, HIGH);
+      digitalWrite(led3Pin, HIGH);
+  } else if(v < 730) {
+      digitalWrite(led2Pin, LOW);
+      digitalWrite(led3Pin, LOW);
+  } else {
+      digitalWrite(led2Pin, HIGH);
+      digitalWrite(led3Pin, LOW);
+  }
 
   if(y < THRESHOLD_LOW)
   {
