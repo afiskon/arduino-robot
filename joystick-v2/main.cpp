@@ -23,9 +23,9 @@ const int joystickY = A1;
 const int joystickBtn = 2;
 
 const int voltagePin = A2;
-const int led1Pin = 8;
+const int led1Pin = 6;
 const int led2Pin = 7;
-const int led3Pin = 6;
+const int led3Pin = 8;
 
 const int THRESHOLD_LOW = 490;
 const int THRESHOLD_HIGH = 510;
@@ -73,10 +73,10 @@ void loop()
   int v = analogRead(voltagePin);
   // Serial.println(String("voltage val = ") + v);
   
-  if(v > 850) {
+  if(v > 830) {
       digitalWrite(led2Pin, HIGH);
       digitalWrite(led3Pin, HIGH);
-  } else if(v < 730) {
+  } else if(v < 740) {
       digitalWrite(led2Pin, LOW);
       digitalWrite(led3Pin, LOW);
   } else {
