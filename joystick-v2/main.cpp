@@ -23,9 +23,9 @@ const int joystickY = A1;
 const int joystickBtn = 2;
 
 const int voltagePin = A2;
-const int led1Pin = 6;
+const int led1Pin = 8;
 const int led2Pin = 7;
-const int led3Pin = 8;
+const int led3Pin = 6;
 
 const int THRESHOLD_LOW = 490;
 const int THRESHOLD_HIGH = 510;
@@ -54,7 +54,6 @@ void setup()
   radio.openWritingPipe(addresses[1]);
   // radio.openReadingPipe(1, addresses[0]); // not used yet
 
-  digitalWrite(led1Pin, HIGH);
 }
 
 void loop()
@@ -74,12 +73,15 @@ void loop()
   // Serial.println(String("voltage val = ") + v);
   
   if(v > 830) {
-      digitalWrite(led2Pin, HIGH);
-      digitalWrite(led3Pin, HIGH);
-  } else if(v < 740) {
+      digitalWrite(led1Pin, HIGH);
       digitalWrite(led2Pin, LOW);
       digitalWrite(led3Pin, LOW);
+  } else if(v < 740) {
+      digitalWrite(led1Pin, LOW);
+      digitalWrite(led2Pin, LOW);
+      digitalWrite(led3Pin, HIGH);
   } else {
+      digitalWrite(led1Pin, LOW);
       digitalWrite(led2Pin, HIGH);
       digitalWrite(led3Pin, LOW);
   }
